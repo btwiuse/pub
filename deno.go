@@ -5,8 +5,8 @@ import "C"
 
 import (
 	"github.com/webteleport/ufo/apps/teleport"
-	"unsafe"
 	"log"
+	"unsafe"
 )
 
 //go:generate env CGO_ENABLED=1 go build -v -o libteleport.so -buildmode=c-shared .
@@ -21,8 +21,11 @@ func Run2(cstr1, cstr2 *C.char) {
 	println("2")
 }
 
-func convertToByte(c C.char) byte {
-    return byte((uint8)(c))
+func isNULL(p *C.char) bool {
+	if uint(uintptr(unsafe.Pointer(p))) == 0x00 {
+		return true
+	}
+	return byte((uint8)(*p)) == 0x00
 }
 
 func offsetof(n int, base uintptr) uintptr {
@@ -32,15 +35,11 @@ func offsetof(n int, base uintptr) uintptr {
 //export Run
 func Run(cstrs *C.char) {
 	strs := []string{}
-	for {
-		leading := *cstrs
-		if convertToByte(leading) == 0x00 {
-			break
-		}
+	for !isNULL(cstrs) {
 		str := C.GoString(cstrs)
 		strs = append(strs, str)
 		// println(str)
-		cstrs = (*C.char)(unsafe.Pointer(uintptr(unsafe.Pointer(cstrs)) + offsetof((len(str) + 1), unsafe.Sizeof(*cstrs))))
+		cstrs = (*C.char)(unsafe.Pointer(uintptr(unsafe.Pointer(cstrs)) + offsetof((len(str)+1), unsafe.Sizeof(*cstrs))))
 	}
 	if err := teleport.Run(strs); err != nil {
 		log.Println(err)
