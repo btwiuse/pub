@@ -11,6 +11,7 @@ import (
 )
 
 //go:generate env CGO_ENABLED=1 go build -v -o libteleport.so -buildmode=c-shared .
+//go:generate env CGO_ENABLED=1 go build -v -o libteleport.a -buildmode=c-archive .
 
 //export Run2
 func Run2(cstr1, cstr2 *C.char) {
