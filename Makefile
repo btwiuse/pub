@@ -1,4 +1,5 @@
 all:
+	go mod tidy
 	go generate
 	./run.ts
 

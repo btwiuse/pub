@@ -2,7 +2,7 @@
 
 const dylib = Deno.dlopen("./libteleport.so", {
   Run2: { parameters: ["buffer", "buffer"], result: "void" },
-  Run: { parameters: ["buffer"], result: "void", nonblocking: true },
+  Run: { parameters: ["buffer"], result: "i32", nonblocking: true },
 });
 
 function s2b(s) {

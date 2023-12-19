@@ -4,9 +4,10 @@ package main
 import "C"
 
 import (
-	"github.com/webteleport/ufo/apps/teleport"
 	"log"
 	"unsafe"
+
+	"github.com/webteleport/ufo/apps/teleport"
 )
 
 //go:generate env CGO_ENABLED=1 go build -v -o libteleport.so -buildmode=c-shared .
@@ -21,30 +22,35 @@ func Run2(cstr1, cstr2 *C.char) {
 	println("2")
 }
 
+// Helper function to check if C-style string is NULL
 func isNULL(p *C.char) bool {
-	if uint(uintptr(unsafe.Pointer(p))) == 0x00 {
-		return true
-	}
-	return byte((uint8)(*p)) == 0x00
+	return uint(uintptr(unsafe.Pointer(p))) == 0x00 || byte((uint8)(*p)) == 0x00
 }
 
-func offsetof(n int, base uintptr) uintptr {
-	return base * uintptr(n)
+// Helper function to advance C-style string array pointer
+func advancePointer(cArray *C.char, n int) *C.char {
+	return (*C.char)(unsafe.Pointer(uintptr(unsafe.Pointer(cArray)) + unsafe.Sizeof(*cArray)*(uintptr(n))))
+}
+
+// Helper function to convert C-style string array to Go string slice
+func cArrayToGoSlice(cArray *C.char) []string {
+	strs := []string{}
+	for !isNULL(cArray) {
+		str := C.GoString(cArray)
+		cArray = advancePointer(cArray, len(str)+1)
+		strs = append(strs, str)
+	}
+	return strs
 }
 
 //export Run
-func Run(cstrs *C.char) {
-	strs := []string{}
-	for !isNULL(cstrs) {
-		str := C.GoString(cstrs)
-		strs = append(strs, str)
-		// println(str)
-		cstrs = (*C.char)(unsafe.Pointer(uintptr(unsafe.Pointer(cstrs)) + offsetof((len(str)+1), unsafe.Sizeof(*cstrs))))
-	}
+func Run(cstrs *C.char) C.int {
+	strs := cArrayToGoSlice(cstrs)
 	if err := teleport.Run(strs); err != nil {
 		log.Println(err)
+		return -1
 	}
+	return 0
 }
 
-func main() {
-}
+func main() {}
