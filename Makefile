@@ -10,6 +10,8 @@ rust:
 	cargo build --release
 	ldd ./target/release/main
 	ldd ./target/release/static
+	# env LD_LIBRARY_PATH=$PWD ./target/release/main
+	# ./target/release/static
 
 fmt:
 	go fmt
