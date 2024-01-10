@@ -16,7 +16,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.9.5 // indirect
 	github.com/quic-go/qpack v0.4.0 // indirect
 	github.com/quic-go/qtls-go1-20 v0.3.1 // indirect
-	github.com/quic-go/quic-go v0.37.5 // indirect
+	github.com/quic-go/quic-go v0.37.7 // indirect
 	github.com/quic-go/webtransport-go v0.5.3 // indirect
 	github.com/rs/cors v1.8.2 // indirect
 	github.com/webteleport/auth v0.0.5 // indirect
