@@ -8,4 +8,4 @@ target
 core
 
 staticlib*
-!offline/staticlib.txz
+!.offline-staticlib.txz

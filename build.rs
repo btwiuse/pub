@@ -22,7 +22,7 @@ fn main() {
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
 
     // nop stub for offline build
-    let mut tar_xz = File::open(dir.join("offline").join("staticlib.txz")).unwrap();
+    let mut tar_xz = File::open(dir.join(".offline-staticlib.txz")).unwrap();
 
     let url = format!(
         "https://github.com/btwiuse/pub/releases/download/v{}/staticlib.txz",

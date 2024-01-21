@@ -10,6 +10,6 @@ cargo build --release --target=x86_64-unknown-linux-gnu
 strip ../target/x86_64-unknown-linux-gnu/release/libpub.a
 cp -v ../target/x86_64-unknown-linux-gnu/release/libpub.a staticlib/linux/x86_64/
 
-tar cvJ staticlib > staticlib.txz
+tar cvJ staticlib > ../.offline-staticlib.txz
 
-du -sh staticlib.txz
+du -sh ../.offline-staticlib.txz
