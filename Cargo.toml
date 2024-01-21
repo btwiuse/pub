@@ -1,10 +1,10 @@
 [package]
 name = "pub"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 description = "publish dir, port, url to the open web"
 license = "MIT"
-include = ["*.rs"]
+include = ["*.rs", "offline/*.txz"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
