@@ -1,8 +1,8 @@
 [package]
 name = "pub"
-version = "0.0.1"
+version = "0.1.1"
 edition = "2021"
-description = "publish dir content to the open internet"
+description = "publish dir, port, url to the open web"
 license = "MIT"
 include = ["*.a", "*.rs"]
 
@@ -10,7 +10,7 @@ include = ["*.a", "*.rs"]
 
 [[bin]]
 name = "pub"
-path = "static.rs"
+path = "main.rs"
 
 [dependencies]
 libc = "0.2"

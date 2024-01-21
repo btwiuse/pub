@@ -1,7 +1,7 @@
 use libc::c_char;
 use std::ffi::CString;
 
-#[link(name = "teleport", kind = "static")]
+#[link(name = "teleport")]
 extern "C" {
     fn Run(cstrs: *const c_char) -> libc::c_int;
 }
