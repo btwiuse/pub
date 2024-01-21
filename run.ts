@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --unstable -A
 
-const dylib = Deno.dlopen("./libteleport.so", {
+const dylib = Deno.dlopen("./libpub.so", {
   Run2: { parameters: ["buffer", "buffer"], result: "void" },
   Run: { parameters: ["buffer"], result: "i32", nonblocking: true },
 });
@@ -16,7 +16,6 @@ function a2b(a) {
 
 export function runGoFunction2() {
   dylib.symbols.Run2(
-    s2b("https://ufo.k0s.io"),
     s2b("https://k0s.io"),
   );
 }

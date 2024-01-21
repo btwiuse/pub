@@ -7,7 +7,7 @@ import (
 	"log"
 	"unsafe"
 
-	"github.com/webteleport/ufo/apps/teleport"
+	"github.com/webteleport/ufo/apps/pub"
 )
 
 //export Run2
@@ -16,7 +16,7 @@ func Run2(cstr1, cstr2 *C.char) {
 	str2 := C.GoString(cstr2)
 	println(str1)
 	println(str2)
-	teleport.Run([]string{str1, str2})
+	pub.Run([]string{str1, str2})
 	println("2")
 }
 
@@ -44,7 +44,7 @@ func cArrayToGoSlice(cArray *C.char) []string {
 //export Run
 func Run(cstrs *C.char) C.int {
 	strs := cArrayToGoSlice(cstrs)
-	if err := teleport.Run(strs); err != nil {
+	if err := pub.Run(strs); err != nil {
 		log.Println(err)
 		return -1
 	}

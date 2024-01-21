@@ -21,4 +21,4 @@ fmt:
 
 clean:
 	rm -rf staticlib*
-	rm libteleport*
+	rm libpub*
