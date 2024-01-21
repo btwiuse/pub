@@ -4,16 +4,12 @@ version = "0.0.1"
 edition = "2021"
 description = "publish dir content to the open internet"
 license = "MIT"
-include = ["*.a"]
+include = ["*.a", "*.rs"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [[bin]]
-name = "main"
-path = "main.rs"
-
-[[bin]]
-name = "static"
+name = "pub"
 path = "static.rs"
 
 [dependencies]
