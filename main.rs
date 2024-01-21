@@ -7,7 +7,7 @@ extern "C" {
 }
 
 fn main() {
-    let strs = CString::new("https://k0s.io").unwrap();
+    let strs = CString::new(".").unwrap();
     let result = unsafe { Run(strs.as_ptr()) };
     println!("Result: {}", result);
 }
