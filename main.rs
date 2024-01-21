@@ -1,13 +1,11 @@
-use libc::c_char;
-use std::ffi::CString;
-
-#[link(name = "pub", kind = "static")]
-extern "C" {
-    fn Run(cstrs: *const c_char) -> libc::c_int;
-}
+use r#pub::run;
+use std::env;
+use std::process;
 
 fn main() {
-    let strs = CString::new(".").unwrap();
-    let result = unsafe { Run(strs.as_ptr()) };
-    println!("Result: {}", result);
+    let args: Vec<String> = env::args().collect();
+    let default = String::from(".");
+    let arg = args.get(1).unwrap_or(&default);
+    let result = run(arg);
+    process::exit(result as i32);
 }
