@@ -1,10 +1,10 @@
 [package]
 name = "pub"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "publish dir, port, url to the open web"
 license = "MIT"
-include = ["*.a", "*.rs"]
+include = ["*.rs"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -18,4 +18,4 @@ libc = "0.2"
 [build-dependencies]
 reqwest = { version = "0.11", features = ["blocking", "json"] }
 tar = "0.4"
-flate2 = "1.0"
+xz2 = "0.1"
