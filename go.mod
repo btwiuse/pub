@@ -2,7 +2,7 @@ module github.com/btwiuse/sharedlib
 
 go 1.21.6
 
-require github.com/webteleport/ufo v0.3.9
+require github.com/webteleport/ufo v0.3.10
 
 require (
 	github.com/ebi-yade/altsvc-go v0.1.1 // indirect
