@@ -6,3 +6,5 @@
 target
 *.lock
 core
+
+staticlib*
