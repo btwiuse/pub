@@ -18,3 +18,6 @@ rust:
 fmt:
 	go fmt
 	deno fmt
+
+clean:
+	rm -rf staticlib*
