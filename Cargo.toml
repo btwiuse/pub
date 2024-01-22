@@ -4,7 +4,7 @@ version = "0.1.6"
 edition = "2021"
 description = "publish dir, port, url to the open web"
 license = "MIT"
-include = ["*.rs", ".offline-staticlib.txz"]
+include = ["*.rs", "offline/**", "rust-toolchain.toml"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
@@ -24,9 +24,3 @@ xz2 = "0.1"
 
 [workspace]
 members = [ "./offline" ]
-
-[profile.release]
-opt-level = 'z'
-lto = true
-panic = 'abort'
-strip = true
