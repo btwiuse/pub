@@ -2,6 +2,9 @@ tidy:
 	git config --global --add safe.directory '*'
 	go mod tidy
 
+release:
+	./.release.sh
+
 img:
 	docker build -t btwiuse/pub:dev .
 	docker push btwiuse/pub:dev

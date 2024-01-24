@@ -416,8 +416,8 @@ jobs:
   #     name: build-android
   #     path: ./bin/
 
-  # - run: make release
-  #   name: make release
+    - run: make release
+      name: make release
 
     - name: Create Release
       id: upload-release-asset
@@ -434,7 +434,7 @@ jobs:
         name: release-${{steps.date.outputs.date}}
         tag_name: release-${{steps.date.outputs.date}}
         files: |
-          ./staticlib/*
+          ./staticlib-*
 
     - name: Clean-up releases
       uses: dev-drprasad/delete-older-releases@v0.2.0
