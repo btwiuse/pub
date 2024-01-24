@@ -198,6 +198,7 @@ jobs:
         path: staticlib/
 
   build-linux-others:
+    if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -228,6 +229,7 @@ jobs:
         path: bin/
 
   build-windows:
+    if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -258,6 +260,7 @@ jobs:
         path: bin/
 
   build-darwin:
+    if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -288,6 +291,7 @@ jobs:
         path: bin/
 
   build-bsd:
+    if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -318,6 +322,7 @@ jobs:
         path: bin/
 
   build-android:
+    if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -440,7 +445,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-debug:
-    if: ${{ '2 + 2'  == '4' }}
+  # if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     needs:
     - build-linux
