@@ -2,7 +2,7 @@ module github.com/btwiuse/pub
 
 go 1.21.6
 
-require github.com/webteleport/ufo v0.4.1
+require github.com/webteleport/ufo v0.4.4
 
 require (
 	github.com/ebi-yade/altsvc-go v0.1.1 // indirect

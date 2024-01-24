@@ -1,5 +1,4 @@
 use libc::c_char;
-use std::ffi::CString;
 
 #[link(name = "pub", kind = "static")]
 extern "C" {
@@ -7,7 +6,7 @@ extern "C" {
 }
 
 pub fn run(arg: &str) -> i32 {
-    let cstr = CString::new(arg).expect("CString::new failed");
-    let result = unsafe { Run(cstr.as_ptr()) };
+    let cstr = arg.as_bytes();
+    let result = unsafe { Run(cstr.as_ptr() as *const c_char) };
     result as i32
 }
