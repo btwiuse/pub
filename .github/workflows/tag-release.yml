@@ -426,8 +426,6 @@ jobs:
     # if: steps.cache-flake.outputs.cache-hit != 'true'
     # uses: actions/upload-release-asset@v1
       uses: softprops/action-gh-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         draft: false
         prerelease: false
