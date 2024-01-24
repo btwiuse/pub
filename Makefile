@@ -5,6 +5,10 @@ tidy:
 build-linux: tidy
 	env CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -v -o staticlib/linux/x86_64/libpub.a -buildmode=c-archive .
 
+build-linux-arm64: tidy
+	which aarch64-linux-gnu-gcc || sudo pacman -Sy aarch64-linux-gnu-gcc --noconfirm
+	env CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc GOOS=linux GOARCH=arm64 go build -v -o staticlib/linux/aarch64/libpub.a -buildmode=c-archive .
+
 all:
 	go mod tidy
 	go generate
