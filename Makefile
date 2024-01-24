@@ -1,3 +1,28 @@
+tidy:
+	git config --global --add safe.directory '*'
+	go mod tidy
+
+release:
+	./.release.sh
+
+docker-login:
+	@ docker login -u $(DOCKERHUB_USERNAME) -p $(DOCKERHUB_TOKEN)
+
+devcontainer: docker-login
+	@ docker build -t btwiuse/pub:devcontainer -f .devcontainer/Dockerfile .devcontainer
+	@ docker push btwiuse/pub:devcontainer
+
+img: docker-login
+	docker build -t btwiuse/pub:dev .
+	docker push btwiuse/pub:dev
+
+build-linux: tidy
+	env CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -v -o staticlib/linux/x86_64/libpub.a -buildmode=c-archive .
+
+build-linux-arm64: tidy
+	which aarch64-linux-gnu-gcc || sudo pacman -Sy aarch64-linux-gnu-gcc --noconfirm
+	env CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc GOOS=linux GOARCH=arm64 go build -v -o staticlib/linux/aarch64/libpub.a -buildmode=c-archive .
+
 all:
 	go mod tidy
 	go generate
