@@ -1,8 +1,8 @@
-use libc::c_char;
+use std::os::raw::{c_char, c_int};
 
 #[link(name = "pub", kind = "static")]
 extern "C" {
-    fn Run(cstrs: *const c_char) -> libc::c_int;
+    fn Run(cstrs: *const c_char) -> c_int;
 }
 
 pub fn encode(args: Vec<String>) -> Vec<u8> {

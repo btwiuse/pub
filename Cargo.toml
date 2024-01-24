@@ -1,9 +1,10 @@
 [package]
 name = "pub"
-version = "0.1.8"
+version = "0.1.9"
 edition = "2021"
 description = "publish dir, port, url to the open web"
 license = "MIT"
+repository = "https://github.com/btwiuse/pub"
 include = ["*.rs", "offline/**", "rust-toolchain.toml"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -15,10 +16,9 @@ name = "pub"
 path = "main.rs"
 
 [dependencies]
-libc = "0.2"
 
 [build-dependencies]
-reqwest = { version = "0.11", features = ["blocking", "json"] }
+ureq = "2.9"
 tar = "0.4"
 xz2 = "0.1"
 

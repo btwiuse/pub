@@ -5,11 +5,13 @@ use std::io::BufReader;
 use std::path::PathBuf;
 use std::process::Command;
 
-use reqwest::blocking::get;
 use tar::Archive;
+use ureq::get;
 use xz2::read::XzDecoder;
 
 fn main() {
+    println!("cargo:rerun-if-env-changed=OFFLINE");
+
     let os = env::var("CARGO_CFG_TARGET_OS").unwrap();
     let arch = env::var("CARGO_CFG_TARGET_ARCH").unwrap();
     let version = env::var("CARGO_PKG_VERSION").unwrap();
@@ -40,8 +42,11 @@ fn main() {
         .expect("Failed to execute command");
     let mut lib_dir = target_dir.join("release");
 
-    if let Ok(d) = download_and_extract_staticlib(&out_dir, &version, &os, &arch) {
-        lib_dir = d;
+    if env::var("OFFLINE") == Ok(String::from("1")) {
+        let _ = download_and_extract_staticlib(&out_dir, &version, &os, &arch).and_then(|d| {
+            lib_dir = d;
+            Ok(())
+        });
     }
 
     println!("cargo:rustc-link-search=native={}", lib_dir.display());
@@ -59,15 +64,12 @@ fn download_and_extract_staticlib(
     );
 
     // Download the file if network is available during build
-    let mut response = match get(&url) {
-        Ok(response) => response,
-        Err(e) => {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::Other,
-                e.to_string(),
-            ))
-        }
-    };
+    let mut response = get(&url).call().or_else(|e| {
+        Err(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            e.to_string(),
+        ))
+    })?.into_reader();
     let mut out = File::create(out_dir.join("staticlib.txz"))?;
     copy(&mut response, &mut out)?;
 
