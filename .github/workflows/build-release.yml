@@ -102,7 +102,7 @@ jobs:
         key: ${{ runner.os }}-build-linux
 
     - name: make build-linux
-      uses: docker://btwiuse/arch:golang
+      uses: docker://btwiuse/pub:devcontainer
       with:
         entrypoint: bash
         args: -c "make build-linux"
