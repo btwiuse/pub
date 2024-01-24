@@ -54,8 +54,8 @@ fn download_and_extract_staticlib(
     arch: &str,
 ) -> std::io::Result<PathBuf> {
     let url = format!(
-        "https://github.com/btwiuse/pub/releases/download/v{}/staticlib.txz",
-        version
+        "https://github.com/btwiuse/pub/releases/download/v{}/staticlib-{}-{}.txz",
+        version, os, arch,
     );
 
     // Download the file if network is available during build
