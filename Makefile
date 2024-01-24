@@ -1,4 +1,7 @@
-build-linux:
+tidy:
+	go mod tidy
+
+build-linux: tidy
 	env CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -v -o staticlib/linux/x86_64/libpub.a -buildmode=c-archive .
 
 all:
