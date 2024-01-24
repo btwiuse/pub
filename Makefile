@@ -5,7 +5,14 @@ tidy:
 release:
 	./.release.sh
 
-img:
+docker-login:
+	@ docker login -u $(DOCKERHUB_USERNAME) -p $(DOCKERHUB_TOKEN)
+
+devcontainer: docker-login
+	@ docker build -t btwiuse/pub:devcontainer -f .devcontainer/Dockerfile .devcontainer
+	@ docker push btwiuse/pub:devcontainer
+
+img: docker-login
 	docker build -t btwiuse/pub:dev .
 	docker push btwiuse/pub:dev
 
