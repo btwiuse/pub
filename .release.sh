@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOT_DIR=$(dirname $(dirname $(realpath -m ${0})))
+ROOT_DIR=$(dirname $(realpath -m ${0}))
 
 loop(){
   cd ${ROOT_DIR}
