@@ -132,7 +132,7 @@ jobs:
         key: ${{ runner.os }}-build-linux-arm
 
     - name: make build-linux-arm
-      uses: docker://btwiuse/arch:golang
+      uses: docker://btwiuse/pub:devcontainer
       with:
         entrypoint: bash
         args: -c "make build-linux-arm64"
