@@ -86,6 +86,7 @@ jobs:
         args: -c "make go-install-debuginfo"
 
   push-devcontainer:
+    if: ${{ '2 + 2'  == '5' }}
     needs:
     - push-image
     runs-on: ubuntu-latest
@@ -113,6 +114,7 @@ jobs:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
   push-image:
+    if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -434,7 +436,7 @@ jobs:
         name: release-${{steps.date.outputs.date}}
         tag_name: release-${{steps.date.outputs.date}}
         files: |
-          ./staticlib-*
+          ./staticlib/staticlib-*
 
     - name: Clean-up releases
       uses: dev-drprasad/delete-older-releases@v0.2.0
