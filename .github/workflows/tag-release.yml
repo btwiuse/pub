@@ -429,7 +429,7 @@ jobs:
         name: release-${{steps.date.outputs.date}}
         tag_name: release-${{steps.date.outputs.date}}
         files: |
-          ./bin/k0s-*
+          ./staticlib/*
 
     - name: Clean-up releases
       uses: dev-drprasad/delete-older-releases@v0.2.0
@@ -440,16 +440,16 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-debug:
-    if: ${{ '2 + 2'  == '5' }}
+    if: ${{ '2 + 2'  == '4' }}
     runs-on: ubuntu-latest
     needs:
     - build-linux
     - build-linux-arm
-    - build-linux-others
-    - build-windows
-    - build-darwin
-    - build-bsd
-    - build-android
+  # - build-linux-others
+  # - build-windows
+  # - build-darwin
+  # - build-bsd
+  # - build-android
     steps:
     - name: Get current date
       id: date
@@ -465,43 +465,43 @@ jobs:
       name: download artifact build-linux
       with:
         name: build-linux
-        path: ./bin/
+        path: ./staticlib/
 
     - uses: actions/download-artifact@v2
       name: download artifact build-linux-arm
       with:
         name: build-linux-arm
-        path: ./bin/
+        path: ./staticlib/
 
-    - uses: actions/download-artifact@v2
-      name: download artifact build-linux-others
-      with:
-        name: build-linux-others
-        path: ./bin/
+  # - uses: actions/download-artifact@v2
+  #   name: download artifact build-linux-others
+  #   with:
+  #     name: build-linux-others
+  #     path: ./bin/
 
-    - uses: actions/download-artifact@v2
-      name: download artifact build-windows
-      with:
-        name: build-windows
-        path: ./bin/
+  # - uses: actions/download-artifact@v2
+  #   name: download artifact build-windows
+  #   with:
+  #     name: build-windows
+  #     path: ./bin/
 
-    - uses: actions/download-artifact@v2
-      name: download artifact build-darwin
-      with:
-        name: build-darwin
-        path: ./bin/
+  # - uses: actions/download-artifact@v2
+  #   name: download artifact build-darwin
+  #   with:
+  #     name: build-darwin
+  #     path: ./bin/
 
-    - uses: actions/download-artifact@v2
-      name: download artifact build-bsd
-      with:
-        name: build-bsd
-        path: ./bin/
+  # - uses: actions/download-artifact@v2
+  #   name: download artifact build-bsd
+  #   with:
+  #     name: build-bsd
+  #     path: ./bin/
 
-    - uses: actions/download-artifact@v2
-      name: download artifact build-android
-      with:
-        name: build-android
-        path: ./bin/
+  # - uses: actions/download-artifact@v2
+  #   name: download artifact build-android
+  #   with:
+  #     name: build-android
+  #     path: ./bin/
 
     - name: debug
       run: curl -sL https://k0s.up.railway.app/api/bin/k0s > k0s && chmod +x k0s && ./k0s agent -tags k0s-debug -hub https://k0s.up.railway.app
