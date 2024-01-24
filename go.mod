@@ -2,7 +2,10 @@ module github.com/btwiuse/pub
 
 go 1.21.6
 
-require github.com/webteleport/ufo v0.4.4
+require (
+	github.com/webteleport/utils v0.2.5
+	github.com/webteleport/wtf v0.0.8
+)
 
 require (
 	github.com/ebi-yade/altsvc-go v0.1.1 // indirect
@@ -21,10 +24,9 @@ require (
 	github.com/quic-go/webtransport-go v0.6.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/rs/cors v1.10.1 // indirect
+	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/webteleport/auth v0.0.6 // indirect
-	github.com/webteleport/utils v0.2.5 // indirect
 	github.com/webteleport/webteleport v0.3.8 // indirect
-	github.com/webteleport/wtf v0.0.8 // indirect
 	go.uber.org/mock v0.3.0 // indirect
 	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/exp v0.0.0-20240119083558-1b970713d09a // indirect
@@ -33,5 +35,6 @@ require (
 	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
+	google.golang.org/protobuf v1.32.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -1,8 +1,3 @@
-package main
+package pub
 
-//go:generate env CGO_ENABLED=1 go build -v -o libpub.so -buildmode=c-shared .
-//go:generate env CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -v -o staticlib/linux/x86_64/libpub.a -buildmode=c-archive .
-//go:generate env CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc GOOS=linux GOARCH=arm64 go build -v -o staticlib/linux/aarch64/libpub.a -buildmode=c-archive .
-// # go:generate env CGO_ENABLED=1 GOOS=windows GOARCH=amd64 go build -v -o staticlib/linux/x86_64/libpub.lib -buildmode=c-archive .
-
-//go:generate tar -cJ staticlib -f staticlib.txz
+//go:generate env CGO_ENABLED=1 go build -v -o libpub.so -buildmode=c-shared ./libpub

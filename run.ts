@@ -11,7 +11,7 @@ function s2b(s) {
 }
 
 function a2b(a) {
-  return new Uint8Array([...a.map((s) => [...s2b(s), 0]).flat()]);
+  return new Uint8Array([...a.map((s) => [...s2b(s), 0]).flat(), 0]);
 }
 
 export function runGoFunction2() {

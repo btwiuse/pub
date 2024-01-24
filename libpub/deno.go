@@ -7,7 +7,7 @@ import (
 	"log"
 	"unsafe"
 
-	"github.com/webteleport/ufo/apps/pub"
+	"github.com/btwiuse/pub"
 )
 
 //export Run2
