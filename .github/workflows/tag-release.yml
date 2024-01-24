@@ -128,7 +128,7 @@ jobs:
       name: probe env
 
     - name: build and push docker image
-      uses: docker://btwiuse/k0s:devcontainer
+      uses: docker://btwiuse/arch:golang
       with:
         entrypoint: bash
         args: -c "sudo -E make img"

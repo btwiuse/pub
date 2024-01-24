@@ -2,6 +2,14 @@ tidy:
 	git config --global --add safe.directory '*'
 	go mod tidy
 
+img:
+	docker build -t btwiuse/pub:dev .
+	docker push btwiuse/pub:dev
+
+devcontainer:
+	docker build -t btwiuse/pub:dev .
+	docker push btwiuse/pub:devcontainer
+
 build-linux: tidy
 	env CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -v -o staticlib/linux/x86_64/libpub.a -buildmode=c-archive .
 
