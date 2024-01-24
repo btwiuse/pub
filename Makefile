@@ -1,4 +1,5 @@
 tidy:
+	git config --global --add safe.directory '*'
 	go mod tidy
 
 build-linux: tidy
