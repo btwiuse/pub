@@ -1,8 +1,8 @@
 [package]
 name = "pub"
-version = "0.1.12"
+version = "0.1.13"
 edition = "2021"
-description = "publish dir, port, url to the open web"
+description = "publish anything to the open web"
 license = "MIT"
 repository = "https://github.com/btwiuse/pub"
 

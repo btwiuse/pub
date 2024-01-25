@@ -1,6 +1,6 @@
 # NAME
 
-**pub** - Publish resources at specified paths
+**pub** - Publish anything to the open web
 
 # SYNOPSIS
 
@@ -8,31 +8,25 @@
 
 # DESCRIPTION
 
-The `pub` command accepts an optional sequence of resource-path pairs. Each pair consists of a resource (`res1`) and a path (`path1`). These pairs can be repeated any number of times, including not at all. For each pair, the path is mandatory except for the last resource (`resN`). When the path is omitted, it defaults to "/".
+The `pub` command accepts an optional sequence of resource-path pairs, where resource could be any file, dir, port or url, and path specifies the mountpoint of the resource.
+
+For each pair, the path is mandatory except for the last resource (`resN`).  When the path is omitted, it defaults to "/".
+
+In the special case of N=1, `pub README.md /` could be simplified to `pub README.md`.
 
 # EXAMPLES
 
-Publish a directory at the default path:
-
 ```
+# Publish a directory at the default path:
 $ pub .
-```
 
-Publish a specified port:
-
-```
+# Publish a specified port:
 $ pub :8080
-```
 
-Publish a URL at the default path:
-
-```
+# Publish a URL at the default path:
 $ pub https://example.com
-```
 
-Publish at a port with a specified path, followed by a URL at the default path:
-
-```
+# Publish at a port with a specified path, followed by a URL at the default path:
 $ pub \
   :9944 /rpc/ws \
   https://polkadot.js.org/apps/
