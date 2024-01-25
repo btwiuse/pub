@@ -18,50 +18,54 @@ fn main() {
     let pwd = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
     let staticlib_dir = pwd.join("staticlib").join(os.clone()).join(arch.clone());
-    let stub_dir = dbg!(must_build_offline_stub(&out_dir));
+
+    if dbg!(env::var("IS_STUB")) == Ok(String::from("1")) {
+        return;
+    }
 
     // use local go static lib if found
     if dbg!(staticlib_dir.exists()) {
-        println!("(1) using local ./staticlib");
+        println!("(0) using local ./staticlib");
         println!("cargo:rustc-link-search=native={}", staticlib_dir.display());
         return;
     }
 
+    // build stub lib as fallback
+    let stub_dir = dbg!(must_build_stub(&out_dir));
+
     // use offline stub and avoid downloading precompile if OFFLINE=1
     if dbg!(env::var("OFFLINE")) == Ok(String::from("1")) {
-        println!("(2) using offline stub");
+        println!("(1) using offline stub");
         println!("cargo:rustc-link-search=native={}", stub_dir.display());
         return;
     }
 
     // download precompile if network access is enabled, fallback to stub_dir on error
     if let Ok(download_dir) = download_and_extract_precompile(&out_dir, &version, &os, &arch) {
-        println!("(3) using online precompile");
+        println!("(2) using online precompile");
         println!("cargo:rustc-link-search=native={}", download_dir.display());
     } else {
-        println!("(4) using offline stub");
+        println!("(3) failed to get precompile for {version}, using offline stub");
         println!("cargo:rustc-link-search=native={}", stub_dir.display());
     }
 }
 
-fn must_build_offline_stub(base: &PathBuf) -> PathBuf {
-    // use offline rust static lib as fallback
-    let target_dir = base.join("offline");
-    // run cargo b -p offline -r --target-dir target_dir
+fn must_build_stub(out_dir: &PathBuf) -> PathBuf {
+    env::set_var("IS_STUB", "1");
+    let stub_dir = out_dir.join("stub");
     let _ = Command::new("cargo")
         .args(&[
             "build",
             "--release",
-            "--package",
-            "offline",
+            "--lib",
             "--target-dir",
-            dbg!(target_dir.to_str().unwrap()),
+            dbg!(stub_dir.to_str().unwrap()),
         ])
         .output()
         .expect("Failed to execute command");
-    let release_dir = target_dir.join("release");
-    assert!(release_dir.exists());
-    release_dir
+    let stub_release_dir = stub_dir.join("release");
+    assert!(stub_release_dir.exists());
+    stub_release_dir
 }
 
 fn download_and_extract_precompile(

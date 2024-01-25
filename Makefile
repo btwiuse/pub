@@ -16,7 +16,7 @@ img: docker-login
 	docker build -t btwiuse/pub:dev .
 	docker push btwiuse/pub:dev
 
-build-linux: tidy
+build-linux-amd64: tidy
 	env CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -v -o staticlib/linux/x86_64/libpub.a -buildmode=c-archive ./libpub
 
 build-linux-arm64: tidy
@@ -47,4 +47,4 @@ fmt:
 
 clean:
 	rm -rf staticlib*
-	rm libpub*
+	rm libpub.*

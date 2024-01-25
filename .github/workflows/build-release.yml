@@ -105,7 +105,7 @@ jobs:
       uses: docker://btwiuse/pub:devcontainer
       with:
         entrypoint: bash
-        args: -c "make build-linux"
+        args: -c "make build-linux-amd64"
       env:
         GOCACHE: /github/workspace/.cache/go-build
 
