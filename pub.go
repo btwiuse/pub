@@ -8,7 +8,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/btwiuse/dl/version"
 	"github.com/btwiuse/pub/handler"
 	"github.com/webteleport/utils"
 	"github.com/webteleport/wtf"
@@ -79,10 +78,4 @@ func Run(args []string) error {
 	handler = utils.GzipMiddleware(handler)
 	handler = utils.GinLoggerMiddleware(handler)
 	return wtf.Serve("https://k0s.io", handler)
-}
-
-func RunTip(args []string) error {
-        os.Args = append([]string{"gotip"}, args...)
-        version.RunTip()
-        return nil
 }
