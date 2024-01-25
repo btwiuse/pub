@@ -1,21 +1,43 @@
-# pub
+# NAME
 
-[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/github.com/btwiuse/pub?tab=doc)
-[![Go 1.18+](https://img.shields.io/github/go-mod/go-version/btwiuse/pub)](https://golang.org/dl/)
-[![License](https://img.shields.io/github/license/btwiuse/pub?color=%23000&style=flat-round)](https://github.com/btwiuse/pub/blob/main/LICENSE)
+**pub** - Publish resources at specified paths
+
+# SYNOPSIS
+
+**pub** [res1 path1]... [resN [pathN]]
+
+# DESCRIPTION
+
+The `pub` command accepts an optional sequence of resource-path pairs. Each pair consists of a resource (`res1`) and a path (`path1`). These pairs can be repeated any number of times, including not at all. For each pair, the path is mandatory except for the last resource (`resN`). When the path is omitted, it defaults to "/".
+
+# EXAMPLES
+
+Publish a directory at the default path:
 
 ```
-# dir
 $ pub .
+```
 
-# port
+Publish a specified port:
+
+```
 $ pub :8080
+```
 
-# url
+Publish a URL at the default path:
+
+```
 $ pub https://example.com
+```
 
-# port + url
+Publish at a port with a specified path, followed by a URL at the default path:
+
+```
 $ pub \
   :9944 /rpc/ws \
   https://polkadot.js.org/apps/
 ```
+
+# SEE ALSO
+
+- https://pkg.go.dev/github.com/btwiuse/pub

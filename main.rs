@@ -22,5 +22,10 @@ pub fn run(args: Vec<String>) -> i32 {
 }
 
 fn main() {
-    process::exit(run(env::args().skip(1).collect()));
+    let args: Vec<String> = env::args().skip(1).collect();
+    if args.is_empty() {
+        println!(include_str!("README.md"));
+        return;
+    }
+    process::exit(run(args));
 }
