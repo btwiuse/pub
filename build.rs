@@ -20,7 +20,7 @@ fn main() {
     let lib_dir = dir.join("staticlib").join(os.clone()).join(arch.clone());
 
     // use local go static lib if found
-    if lib_dir.exists() {
+    if dbg!(lib_dir.exists()) {
         println!("cargo:rustc-link-search=native={}", lib_dir.display());
         return;
     }
@@ -36,15 +36,15 @@ fn main() {
             "--package",
             "offline",
             "--target-dir",
-            target_dir.to_str().unwrap(),
+            dbg!(target_dir.to_str().unwrap()),
         ])
         .output()
         .expect("Failed to execute command");
-    let mut lib_dir = target_dir.join("release");
+    let mut lib_dir = dbg!(target_dir.join("release"));
 
-    if env::var("OFFLINE") == Ok(String::from("1")) {
+    if dbg!(env::var("OFFLINE")) == Ok(String::from("1")) {
         let _ = download_and_extract_staticlib(&out_dir, &version, &os, &arch).and_then(|d| {
-            lib_dir = d;
+            lib_dir = dbg!(d);
             Ok(())
         });
     }
