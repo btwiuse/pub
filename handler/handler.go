@@ -88,7 +88,7 @@ func ResourceHandler(s string) http.Handler {
 
 func InferPrefix(s string) string {
 	switch {
-	case isFile(s), pathExists(s):
+	case strings.HasSuffix(s, "/"):
 		return strings.TrimSuffix(s, "/")
 	default:
 		return ""

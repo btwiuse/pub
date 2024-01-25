@@ -24,6 +24,8 @@ func SplitPathPrefix(pp string) (path, pfx string) {
 		parts := strings.SplitN(pp, "#", 2)
 		path = parts[0]
 		pfx = parts[1]
+	} else if pfx == "" {
+		pfx = handler.InferPrefix(path)
 	}
 	return
 }
@@ -53,12 +55,17 @@ func Parse(s []string) (rules Rules) {
 
 func ApplyRules(mux *http.ServeMux, rules Rules) {
 	for _, rule := range rules {
-		if rule.Prefix == "" {
-			slog.Info(fmt.Sprintf("%s %s => %s", handler.ResourceEmoji(rule.Resource), rule.Path, rule.Resource))
-		} else {
-			slog.Info(fmt.Sprintf("%s %s => %s (stripping prefix: %s)", handler.ResourceEmoji(rule.Resource), rule.Path, rule.Resource, rule.Prefix))
+		res := rule.Resource
+		path := rule.Path
+		pfx := rule.Prefix
+		emoji := handler.ResourceEmoji(res)
+		info := fmt.Sprintf("%s %s 🌐 %s", emoji, res, path)
+		if pfx != "" {
+			info = fmt.Sprintf("%s (stripping prefix: %s)", info, pfx)
 		}
-		mux.Handle(rule.Path, http.StripPrefix(rule.Prefix, handler.ResourceHandler(rule.Resource)))
+		slog.Info(info)
+		handlr := http.StripPrefix(pfx, handler.ResourceHandler(res))
+		mux.Handle(rule.Path, handlr)
 	}
 	mux.HandleFunc("/debug/vars", expvar.Handler().ServeHTTP)
 }
