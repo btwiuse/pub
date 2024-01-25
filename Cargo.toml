@@ -5,7 +5,6 @@ edition = "2021"
 description = "publish dir, port, url to the open web"
 license = "MIT"
 repository = "https://github.com/btwiuse/pub"
-include = ["*.rs", "rust-toolchain.toml", "README.md"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
