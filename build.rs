@@ -15,19 +15,38 @@ fn main() {
     let os = env::var("CARGO_CFG_TARGET_OS").unwrap();
     let arch = env::var("CARGO_CFG_TARGET_ARCH").unwrap();
     let version = env::var("CARGO_PKG_VERSION").unwrap();
-
-    let dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
-    let lib_dir = dir.join("staticlib").join(os.clone()).join(arch.clone());
+    let pwd = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
+    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
+    let staticlib_dir = pwd.join("staticlib").join(os.clone()).join(arch.clone());
+    let stub_dir = dbg!(must_build_offline_stub(&out_dir));
 
     // use local go static lib if found
-    if dbg!(lib_dir.exists()) {
-        println!("cargo:rustc-link-search=native={}", lib_dir.display());
+    if dbg!(staticlib_dir.exists()) {
+        println!("(1) using local ./staticlib");
+        println!("cargo:rustc-link-search=native={}", staticlib_dir.display());
         return;
     }
 
+    // use offline stub and avoid downloading precompile if OFFLINE=1
+    if dbg!(env::var("OFFLINE")) == Ok(String::from("1")) {
+        println!("(2) using offline stub");
+        println!("cargo:rustc-link-search=native={}", stub_dir.display());
+        return;
+    }
+
+    // download precompile if network access is enabled, fallback to stub_dir on error
+    if let Ok(download_dir) = download_and_extract_precompile(&out_dir, &version, &os, &arch) {
+        println!("(3) using online precompile");
+        println!("cargo:rustc-link-search=native={}", download_dir.display());
+    } else {
+        println!("(4) using offline stub");
+        println!("cargo:rustc-link-search=native={}", stub_dir.display());
+    }
+}
+
+fn must_build_offline_stub(base: &PathBuf) -> PathBuf {
     // use offline rust static lib as fallback
-    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
-    let target_dir = out_dir.join("offline");
+    let target_dir = base.join("offline");
     // run cargo b -p offline -r --target-dir target_dir
     let _ = Command::new("cargo")
         .args(&[
@@ -40,19 +59,12 @@ fn main() {
         ])
         .output()
         .expect("Failed to execute command");
-    let mut lib_dir = dbg!(target_dir.join("release"));
-
-    if dbg!(env::var("OFFLINE")) == Ok(String::from("1")) {
-        let _ = download_and_extract_staticlib(&out_dir, &version, &os, &arch).and_then(|d| {
-            lib_dir = dbg!(d);
-            Ok(())
-        });
-    }
-
-    println!("cargo:rustc-link-search=native={}", lib_dir.display());
+    let release_dir = target_dir.join("release");
+    assert!(release_dir.exists());
+    release_dir
 }
 
-fn download_and_extract_staticlib(
+fn download_and_extract_precompile(
     out_dir: &PathBuf,
     version: &str,
     os: &str,
@@ -64,12 +76,15 @@ fn download_and_extract_staticlib(
     );
 
     // Download the file if network is available during build
-    let mut response = get(&url).call().or_else(|e| {
-        Err(std::io::Error::new(
-            std::io::ErrorKind::Other,
-            e.to_string(),
-        ))
-    })?.into_reader();
+    let mut response = get(&url)
+        .call()
+        .or_else(|e| {
+            Err(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                e.to_string(),
+            ))
+        })?
+        .into_reader();
     let mut out = File::create(out_dir.join("staticlib.txz"))?;
     copy(&mut response, &mut out)?;
 
