@@ -52,7 +52,23 @@ func serveFile(s string) http.Handler {
 	})
 }
 
-// this won't work for files without StripPrefix
+func ResourceEmoji(s string) string {
+	switch {
+	case isFile(s):
+		return "📄"
+	case pathExists(s):
+		return "📁"
+	case isPort(s):
+		return "🔌"
+	case isHostPort(s):
+		return "💻"
+	case isValidURL(s):
+		return "🌐"
+	default:
+		return "🔀"
+	}
+}
+
 func ResourceHandler(s string) http.Handler {
 	switch {
 	case isFile(s):

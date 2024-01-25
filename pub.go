@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/btwiuse/pub/handler"
@@ -19,20 +18,18 @@ type Rule struct {
 	Prefix   string
 }
 
-func NewRule(res, path_with_prefix string) Rule {
-	path := path_with_prefix
-	pfx := ""
-	if strings.Contains(path_with_prefix, "#") {
-		parts := strings.SplitN(path_with_prefix, "#", 2)
+func SplitPathPrefix(pp string) (path, pfx string) {
+	path = pp
+	if strings.Contains(pp, "#") {
+		parts := strings.SplitN(pp, "#", 2)
 		path = parts[0]
 		pfx = parts[1]
 	}
-	/*
-		if pfx == "" {
-			pfx = handler.InferPrefix(res)
-			slog.Info("infer: "+pfx)
-		}
-	*/
+	return
+}
+
+func NewRule(res, path_with_prefix string) Rule {
+	path, pfx := SplitPathPrefix(path_with_prefix)
 	return Rule{res, path, pfx}
 }
 
@@ -57,9 +54,9 @@ func Parse(s []string) (rules Rules) {
 func ApplyRules(mux *http.ServeMux, rules Rules) {
 	for _, rule := range rules {
 		if rule.Prefix == "" {
-			slog.Info(fmt.Sprintf("✅ %s => %s", rule.Path, rule.Resource))
+			slog.Info(fmt.Sprintf("%s %s => %s", handler.ResourceEmoji(rule.Resource), rule.Path, rule.Resource))
 		} else {
-			slog.Info(fmt.Sprintf("✅ %s => %s (stripping prefix: %s)", rule.Path, rule.Resource, rule.Prefix))
+			slog.Info(fmt.Sprintf("%s %s => %s (stripping prefix: %s)", handler.ResourceEmoji(rule.Resource), rule.Path, rule.Resource, rule.Prefix))
 		}
 		mux.Handle(rule.Path, http.StripPrefix(rule.Prefix, handler.ResourceHandler(rule.Resource)))
 	}
