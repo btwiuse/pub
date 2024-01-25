@@ -3,6 +3,7 @@ module github.com/btwiuse/pub
 go 1.21.6
 
 require (
+	github.com/btwiuse/dl v0.0.0-20240125061410-99198cada35f
 	github.com/webteleport/utils v0.2.5
 	github.com/webteleport/wtf v0.0.8
 )
