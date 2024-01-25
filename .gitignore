@@ -10,5 +10,5 @@ core
 staticlib*
 !.offline-staticlib.txz
 
-pub
-gotip
+/pub
+/gotip
