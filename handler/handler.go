@@ -5,7 +5,6 @@ import (
 	"net/url"
 	"os"
 	"regexp"
-	"strings"
 
 	"github.com/webteleport/utils"
 )
@@ -83,14 +82,5 @@ func ResourceHandler(s string) http.Handler {
 		return utils.ReverseProxy(s)
 	default:
 		return utils.ReverseProxy(s)
-	}
-}
-
-func InferPrefix(s string) string {
-	switch {
-	case strings.HasSuffix(s, "/"):
-		return strings.TrimSuffix(s, "/")
-	default:
-		return ""
 	}
 }

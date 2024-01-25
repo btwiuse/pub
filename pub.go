@@ -18,6 +18,15 @@ type Rule struct {
 	Prefix   string
 }
 
+func InferPrefix(s string) string {
+	switch {
+	case strings.HasSuffix(s, "/"):
+		return strings.TrimSuffix(s, "/")
+	default:
+		return ""
+	}
+}
+
 func SplitPathPrefix(pp string) (path, pfx string) {
 	path = pp
 	if strings.Contains(pp, "#") {
@@ -25,7 +34,7 @@ func SplitPathPrefix(pp string) (path, pfx string) {
 		path = parts[0]
 		pfx = parts[1]
 	} else if pfx == "" {
-		pfx = handler.InferPrefix(path)
+		pfx = InferPrefix(path)
 	}
 	return
 }
