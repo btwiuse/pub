@@ -6,7 +6,7 @@
 
 ```
 # dir
-$ pub ./
+$ pub .
 
 # port
 $ pub :8080
@@ -14,8 +14,8 @@ $ pub :8080
 # url
 $ pub https://example.com
 
-# dir + port
-$ pub -- \
-  / ./build/ \
-  /api/ :8080
+# port + url
+$ pub \
+  :9944 /rpc/ws \
+  https://polkadot.js.org/apps/
 ```

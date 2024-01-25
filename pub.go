@@ -1,62 +1,80 @@
 package pub
 
 import (
+	"expvar"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"strings"
 
 	"github.com/btwiuse/pub/handler"
+	"github.com/webteleport/utils"
 	"github.com/webteleport/wtf"
 )
 
-func Arg0(args []string, fallback string) string {
-	if len(args) > 0 {
-		return args[0]
-	}
-	return fallback
+type Rule struct {
+	Resource string
+	Path     string
+	Prefix   string
 }
 
-func partitionIntoPairs(s []string) [][2]string {
-	var pairs [][2]string
-
-	for i := 0; i < len(s); i += 2 {
-		if i+1 < len(s) {
-			pairs = append(pairs, [2]string{s[i], s[i+1]})
-		} else {
-			pairs = append(pairs, [2]string{s[i]})
+func NewRule(res, path_with_prefix string) Rule {
+	path := path_with_prefix
+	pfx := ""
+	if strings.Contains(path_with_prefix, "#") {
+		parts := strings.SplitN(path_with_prefix, "#", 2)
+		path = parts[0]
+		pfx = parts[1]
+	}
+	/*
+		if pfx == "" {
+			pfx = handler.InferPrefix(res)
+			slog.Info("infer: "+pfx)
 		}
-	}
-
-	return pairs
+	*/
+	return Rule{res, path, pfx}
 }
 
-func registerRules(mux *http.ServeMux, args []string) {
-	if len(args)%2 != 0 {
-		slog.Warn("uneven number of args passed as rules, dropping the last")
+type Rules []Rule
+
+func (s *Rules) Push(r Rule) {
+	*s = append(*s, r)
+}
+
+func Parse(s []string) (rules Rules) {
+	for i := 0; i < len(s); i += 2 {
+		res := s[i]
+		pwf := "/"
+		if i+1 < len(s) {
+			pwf = s[i+1]
+		}
+		rules.Push(NewRule(res, pwf))
 	}
-	pairs := partitionIntoPairs(args)
-	for _, pair := range pairs {
-		slog.Info(fmt.Sprintf("publishing: %s -> %s", pair[0], pair[1]))
-		mux.Handle(pair[0], http.StripPrefix(strings.TrimSuffix(pair[0], "/"), handler.Handler(pair[1])))
+	return
+}
+
+func ApplyRules(mux *http.ServeMux, rules Rules) {
+	for _, rule := range rules {
+		if rule.Prefix == "" {
+			slog.Info(fmt.Sprintf("✅ %s => %s", rule.Path, rule.Resource))
+		} else {
+			slog.Info(fmt.Sprintf("✅ %s => %s (stripping prefix: %s)", rule.Path, rule.Resource, rule.Prefix))
+		}
+		mux.Handle(rule.Path, http.StripPrefix(rule.Prefix, handler.ResourceHandler(rule.Resource)))
 	}
+	mux.HandleFunc("/debug/vars", expvar.Handler().ServeHTTP)
+}
+
+func Handler(rules Rules) http.Handler {
+	mux := http.NewServeMux()
+	ApplyRules(mux, rules)
+	return mux
 }
 
 func Run(args []string) error {
-	mux := http.NewServeMux()
-
-	arg0 := Arg0(args, ".")
-
-	switch {
-	case arg0 == "--":
-		registerRules(mux, args[1:])
-	case len(args) >= 2:
-		slog.Warn(fmt.Sprintf("add -- before rules to remove ambiguity: pub -- %s", strings.Join(args, " ")))
-		registerRules(mux, args)
-	default:
-		slog.Info(fmt.Sprintf("publishing: %s", arg0))
-		mux.Handle("/", handler.Handler(arg0))
-	}
-
-	return wtf.Serve("https://k0s.io", mux)
+	rules := Parse(args)
+	handler := Handler(rules)
+	handler = utils.GzipMiddleware(handler)
+	handler = utils.GinLoggerMiddleware(handler)
+	return wtf.Serve("https://k0s.io", handler)
 }

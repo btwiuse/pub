@@ -1,3 +1,5 @@
+#![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/README.md"))]
+
 use std::os::raw::{c_char, c_int};
 
 #[link(name = "pub", kind = "static")]

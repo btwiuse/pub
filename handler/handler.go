@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"expvar"
 	"net/http"
 	"net/url"
 	"os"
 	"regexp"
+	"strings"
 
 	"github.com/webteleport/utils"
 )
@@ -52,25 +52,29 @@ func serveFile(s string) http.Handler {
 	})
 }
 
-func Handler(s string) (handler http.Handler) {
+// this won't work for files without StripPrefix
+func ResourceHandler(s string) http.Handler {
 	switch {
 	case isFile(s):
-		handler = serveFile(s)
+		return serveFile(s)
 	case pathExists(s):
-		handler = http.FileServer(http.Dir(s))
+		return http.FileServer(http.Dir(s))
 	case isPort(s):
-		handler = utils.ReverseProxy(s)
+		return utils.ReverseProxy(s)
 	case isHostPort(s):
-		handler = utils.ReverseProxy(s)
+		return utils.ReverseProxy(s)
 	case isValidURL(s):
-		handler = utils.ReverseProxy(s)
+		return utils.ReverseProxy(s)
 	default:
-		handler = utils.ReverseProxy(s)
+		return utils.ReverseProxy(s)
 	}
-	handler = utils.GzipMiddleware(handler)
-	handler = utils.GinLoggerMiddleware(handler)
-	mux := http.NewServeMux()
-	mux.Handle("/", handler)
-	mux.HandleFunc("/debug/vars", expvar.Handler().ServeHTTP)
-	return mux
+}
+
+func InferPrefix(s string) string {
+	switch {
+	case isFile(s), pathExists(s):
+		return strings.TrimSuffix(s, "/")
+	default:
+		return ""
+	}
 }

@@ -26,7 +26,8 @@ build-linux-arm64: tidy
 deno:
 	go mod tidy
 	go generate
-	./run.ts .
+	# ./run.ts .
+	./run.ts . / /tmp/ /tmp/
 
 zigbuild:
 	cargo zigbuild --release --target x86_64-unknown-linux-musl
