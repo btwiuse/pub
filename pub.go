@@ -1,6 +1,7 @@
 package pub
 
 import (
+	_ "embed"
 	"expvar"
 	"fmt"
 	"log/slog"
@@ -87,6 +88,9 @@ func Handler(rules Rules) http.Handler {
 	return mux
 }
 
+//go:embed README.md
+var Usage string
+
 func Run(args []string) error {
 	rules := Parse(args)
 	handler := Handler(rules)
@@ -94,6 +98,6 @@ func Run(args []string) error {
 	handler = utils.GinLoggerMiddleware(handler)
 	name := strings.ReplaceAll(rng.New(), "_", "-")
 	numb := rand.Intn(9000) + 1000
-	addr := fmt.Sprintf("https://pub.webtransport.fun/%s-%s", name, numb)
+	addr := fmt.Sprintf("https://pub.webtransport.fun/%s-%d", name, numb)
 	return wtf.Serve(addr, handler)
 }
