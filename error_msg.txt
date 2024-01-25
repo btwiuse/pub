@@ -1,10 +1,10 @@
-If you are seeing this error, reason could be
+If you are seeing this error, reason could be:
 
-1) network is disabled during cargo build, or env OFFLINE=1 is set
-2) your os/arch is unsupported (see https://github.com/btwiuse/pub/releases/latest/)
-3) the ./staticlib/$os/$arch directory doesn't exist
+1) the ./staticlib/$os/$arch directory doesn't exist at compile time
+2) network is disabled during cargo build, or env OFFLINE=1 is set
+3) current os/arch is unsupported (see https://github.com/btwiuse/pub/releases/latest/)
 
-Please consider installing via `go install` instead:
+In either case, please consider installing it via `go install` instead:
 
    go install github.com/btwiuse/pub/cmd/pub@latest
 
