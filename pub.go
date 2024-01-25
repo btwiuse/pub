@@ -4,12 +4,14 @@ import (
 	"expvar"
 	"fmt"
 	"log/slog"
+	"math/rand"
 	"net/http"
 	"strings"
 
 	"github.com/btwiuse/pub/handler"
 	"github.com/webteleport/utils"
 	"github.com/webteleport/wtf"
+	"k0s.io/pkg/rng"
 )
 
 type Rule struct {
@@ -90,5 +92,8 @@ func Run(args []string) error {
 	handler := Handler(rules)
 	handler = utils.GzipMiddleware(handler)
 	handler = utils.GinLoggerMiddleware(handler)
-	return wtf.Serve("https://k0s.io", handler)
+	name := strings.ReplaceAll(rng.New(), "_", "-")
+	numb := rand.Intn(9000) + 1000
+	addr := fmt.Sprintf("https://pub.webtransport.fun/%s-%s", name, numb)
+	return wtf.Serve(addr, handler)
 }
