@@ -13,7 +13,6 @@ import (
 
 	_ "github.com/rclone/rclone/backend/local"
 	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
 	libhttp "github.com/rclone/rclone/lib/http"
 	"github.com/rclone/rclone/lib/http/serve"
 	"github.com/rclone/rclone/vfs"
@@ -80,6 +79,55 @@ func ResourceEmoji(s string) string {
 	}
 }
 
+func serveFileNode(w http.ResponseWriter, r *http.Request, node vfs.Node) {
+	file := node.(*vfs.File)
+
+	// Set content length if we know how long the object is
+	knownSize := file.Size() >= 0
+	if knownSize {
+		w.Header().Set("Content-Length", strconv.FormatInt(node.Size(), 10))
+	}
+
+	// Set the Last-Modified header to the timestamp
+	w.Header().Set("Last-Modified", file.ModTime().UTC().Format(http.TimeFormat))
+
+	// If HEAD no need to read the object since we have set the headers
+	if r.Method == "HEAD" {
+		return
+	}
+
+	// open the object
+	in, err := file.Open(os.O_RDONLY)
+	if err != nil {
+		// serve.Error(remote, w, "Failed to open file", err)
+		return
+	}
+	defer func() {
+		err := in.Close()
+		if err != nil {
+			// fs.Errorf(remote, "Failed to close file: %v", err)
+		}
+	}()
+
+	// http.ServeContent can't serve unknown length files
+	if !knownSize {
+		if rangeRequest := r.Header.Get("Range"); rangeRequest != "" {
+			http.Error(w, "Can't use Range: on files of unknown length", http.StatusRequestedRangeNotSatisfiable)
+			return
+		}
+		n, err := io.Copy(w, in)
+		if err != nil {
+			fmt.Errorf("Didn't finish writing GET request (wrote %d/unknown bytes): %v", n, err)
+			return
+		}
+	}
+
+	// Serve the file
+	http.ServeContent(w, r, node.Path(), node.ModTime(), in)
+
+	return
+}
+
 func serveDir(s string) http.Handler {
 	VFS := vfs.New(cmd.NewFsSrc([]string{s}), &vfsflags.Opt)
 	t, _ := libhttp.GetTemplate("")
@@ -99,56 +147,7 @@ func serveDir(s string) http.Handler {
 			return
 		}
 		if node.IsFile() {
-			entry := node.DirEntry()
-			if entry == nil {
-				http.Error(w, "Can't open file being written", http.StatusNotFound)
-				return
-			}
-			file := node.(*vfs.File)
-
-			// Set content length if we know how long the object is
-			knownSize := file.Size() >= 0
-			if knownSize {
-				w.Header().Set("Content-Length", strconv.FormatInt(node.Size(), 10))
-			}
-
-			// Set the Last-Modified header to the timestamp
-			w.Header().Set("Last-Modified", file.ModTime().UTC().Format(http.TimeFormat))
-
-			// If HEAD no need to read the object since we have set the headers
-			if r.Method == "HEAD" {
-				return
-			}
-
-			// open the object
-			in, err := file.Open(os.O_RDONLY)
-			if err != nil {
-				serve.Error(remote, w, "Failed to open file", err)
-				return
-			}
-			defer func() {
-				err := in.Close()
-				if err != nil {
-					fs.Errorf(remote, "Failed to close file: %v", err)
-				}
-			}()
-
-			// http.ServeContent can't serve unknown length files
-			if !knownSize {
-				if rangeRequest := r.Header.Get("Range"); rangeRequest != "" {
-					http.Error(w, "Can't use Range: on files of unknown length", http.StatusRequestedRangeNotSatisfiable)
-					return
-				}
-				n, err := io.Copy(w, in)
-				if err != nil {
-					fmt.Errorf("Didn't finish writing GET request (wrote %d/unknown bytes): %v", n, err)
-					return
-				}
-			}
-
-			// Serve the file
-			http.ServeContent(w, r, remote, node.ModTime(), in)
-
+			serveFileNode(w, r, node)
 			return
 		}
 
@@ -158,6 +157,13 @@ func serveDir(s string) http.Handler {
 		}
 
 		dir := node.(*vfs.Dir)
+
+		index, err := dir.Stat("index.html")
+		if err == nil && index.IsFile() {
+			serveFileNode(w, r, index)
+			return
+		}
+
 		dirEntries, err := dir.ReadDirAll()
 		if err != nil {
 			serve.Error(s, w, "Failed to list directory", err)
