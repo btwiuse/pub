@@ -7,7 +7,6 @@ import (
 	"regexp"
 
 	"github.com/btwiuse/better"
-	_ "github.com/rclone/rclone/backend/local"
 	"github.com/webteleport/utils"
 )
 
