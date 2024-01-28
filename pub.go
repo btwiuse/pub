@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"math/rand"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/btwiuse/pub/handler"
@@ -91,13 +92,22 @@ func Handler(rules Rules) http.Handler {
 //go:embed README.md
 var Usage string
 
+func RelayAddr() string {
+	if relay := os.Getenv("RELAY"); relay != "" {
+		return relay
+	}
+
+	name := strings.ReplaceAll(rng.New(), "_", "-")
+	numb := rand.Intn(9000) + 1000
+	return fmt.Sprintf("https://pub.webtransport.fun/%s-%d", name, numb)
+}
+
 func Run(args []string) error {
 	rules := Parse(args)
+
 	handler := Handler(rules)
 	handler = utils.GzipMiddleware(handler)
 	handler = utils.GinLoggerMiddleware(handler)
-	name := strings.ReplaceAll(rng.New(), "_", "-")
-	numb := rand.Intn(9000) + 1000
-	addr := fmt.Sprintf("https://pub.webtransport.fun/%s-%d", name, numb)
-	return wtf.Serve(addr, handler)
+
+	return wtf.Serve(RelayAddr(), handler)
 }
