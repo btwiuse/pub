@@ -17,6 +17,7 @@ name = "pub"
 path = "main.rs"
 
 [dependencies]
+self_update = { version = "0.39", features = ["compression-flate2", "compression-zip-deflate"] }
 
 [build-dependencies]
 ureq = "2.9"
