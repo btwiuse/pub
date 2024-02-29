@@ -5,7 +5,7 @@ go 1.22.0
 require (
 	github.com/btwiuse/better v0.0.0
 	github.com/btwiuse/rng v0.0.0
-	github.com/webteleport/utils v0.2.6
+	github.com/webteleport/utils v0.2.8
 	github.com/webteleport/wtf v0.1.4
 )
 
