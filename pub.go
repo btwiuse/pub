@@ -11,9 +11,9 @@ import (
 	"strings"
 
 	"github.com/btwiuse/pub/handler"
+	"github.com/btwiuse/rng"
 	"github.com/webteleport/utils"
 	"github.com/webteleport/wtf"
-	"k0s.io/pkg/rng"
 )
 
 type Rule struct {
@@ -97,9 +97,8 @@ func RelayAddr() string {
 		return relay
 	}
 
-	name := strings.ReplaceAll(rng.New(), "_", "-")
-	numb := rand.Intn(9000) + 1000
-	return fmt.Sprintf("https://pub.webtransport.fun/%s-%d", name, numb)
+	name := rng.NewDockerSepDigits("-", 4)
+	return fmt.Sprintf("https://pub.webtransport.fun/%s", name)
 }
 
 func Run(args []string) error {

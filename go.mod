@@ -1,12 +1,12 @@
 module github.com/btwiuse/pub
 
-go 1.21.6
+go 1.22.0
 
 require (
 	github.com/btwiuse/better v0.0.0
+	github.com/btwiuse/rng v0.0.0
 	github.com/webteleport/utils v0.2.6
 	github.com/webteleport/wtf v0.1.4
-	k0s.io/pkg/rng v0.1.12
 )
 
 require (
@@ -16,7 +16,7 @@ require (
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/google/pprof v0.0.0-20230821062121-407c9e7a662f // indirect
-	github.com/google/uuid v1.4.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/handlers v1.5.2 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
