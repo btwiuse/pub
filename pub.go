@@ -5,7 +5,6 @@ import (
 	"expvar"
 	"fmt"
 	"log/slog"
-	"math/rand"
 	"net/http"
 	"os"
 	"strings"
@@ -18,34 +17,36 @@ import (
 
 type Rule struct {
 	Resource string
-	Path     string
+	Pattern  string
 	Prefix   string
 }
 
-func InferPrefix(s string) string {
+func InferPrefix(pattern string) string {
+	parts := strings.Split(pattern, " ")
+	pattern = parts[len(parts)-1]
 	switch {
-	case strings.HasSuffix(s, "/"):
-		return strings.TrimSuffix(s, "/")
+	case strings.HasSuffix(pattern, "/"):
+		return strings.TrimSuffix(pattern, "/")
 	default:
 		return ""
 	}
 }
 
-func SplitPathPrefix(pp string) (path, pfx string) {
-	path = pp
+func SplitPathPrefix(pp string) (pattern, pfx string) {
+	pattern = pp
 	if strings.Contains(pp, "#") {
 		parts := strings.SplitN(pp, "#", 2)
-		path = parts[0]
+		pattern = parts[0]
 		pfx = parts[1]
 	} else if pfx == "" {
-		pfx = InferPrefix(path)
+		pfx = InferPrefix(pattern)
 	}
 	return
 }
 
-func NewRule(res, path_with_prefix string) Rule {
-	path, pfx := SplitPathPrefix(path_with_prefix)
-	return Rule{res, path, pfx}
+func NewRule(res, pattern_with_prefix string) Rule {
+	pattern, pfx := SplitPathPrefix(pattern_with_prefix)
+	return Rule{res, pattern, pfx}
 }
 
 type Rules []Rule
@@ -69,22 +70,22 @@ func Parse(s []string) (rules Rules) {
 func ApplyRules(mux *http.ServeMux, rules Rules) {
 	for _, rule := range rules {
 		res := rule.Resource
-		path := rule.Path
+		pattern := rule.Pattern
 		pfx := rule.Prefix
 		emoji := handler.ResourceEmoji(res)
-		info := fmt.Sprintf("%s %s 🌐 %s", emoji, res, path)
+		info := fmt.Sprintf("%s %s 🌐 %s", emoji, res, pattern)
 		if pfx != "" {
 			info = fmt.Sprintf("%s (stripping prefix: %s)", info, pfx)
 		}
 		slog.Info(info)
 		handlr := http.StripPrefix(pfx, handler.ResourceHandler(res))
-		mux.Handle(rule.Path, handlr)
+		mux.Handle(rule.Pattern, handlr)
 	}
-	mux.HandleFunc("/debug/vars", expvar.Handler().ServeHTTP)
 }
 
 func Handler(rules Rules) http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /debug/vars", expvar.Handler().ServeHTTP)
 	ApplyRules(mux, rules)
 	return mux
 }

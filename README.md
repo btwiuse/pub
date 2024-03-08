@@ -20,11 +20,17 @@ In the special case of N=1, `pub README.md /` could be simplified to `pub README
 # Publish a directory at the default path:
 $ pub .
 
+# Publish a dir at subpath:
+$ pub /tmp/ /temp/
+
 # Publish a specified port:
 $ pub :8080
 
 # Publish a URL at the default path:
 $ pub https://example.com
+
+# Publish a URL at the default path while restricting the request method to GET:
+$ pub https://example.com 'GET /'
 
 # Publish at a port with a specified path, followed by a URL at the default path:
 $ pub \

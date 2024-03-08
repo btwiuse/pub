@@ -1,16 +1,16 @@
 module github.com/btwiuse/pub
 
-go 1.22.0
+go 1.22.1
 
 require (
 	github.com/btwiuse/better v0.0.0
 	github.com/btwiuse/rng v0.0.0
 	github.com/webteleport/utils v0.2.8
-	github.com/webteleport/wtf v0.1.4
+	github.com/webteleport/wtf v0.1.5
 )
 
 require (
-	github.com/btwiuse/version v0.0.0 // indirect
+	github.com/btwiuse/version v0.0.1 // indirect
 	github.com/docker/docker v25.0.1+incompatible // indirect
 	github.com/ebi-yade/altsvc-go v0.1.1 // indirect
 	github.com/felixge/httpsnoop v1.0.3 // indirect
@@ -29,21 +29,21 @@ require (
 	github.com/quic-go/webtransport-go v0.6.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/rs/cors v1.10.1 // indirect
-	github.com/webteleport/auth v0.0.6 // indirect
+	github.com/webteleport/auth v0.0.7 // indirect
 	github.com/webteleport/webteleport v0.4.2 // indirect
 	go.uber.org/mock v0.3.0 // indirect
-	golang.org/x/crypto v0.18.0 // indirect
-	golang.org/x/exp v0.0.0-20240119083558-1b970713d09a // indirect
-	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.20.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/crypto v0.19.0 // indirect
+	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225 // indirect
+	golang.org/x/mod v0.15.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.17.0 // indirect
+	golang.org/x/tools v0.18.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k0s.io v0.1.12 // indirect
 	k0s.io/pkg/dial v0.1.12 // indirect
 	k0s.io/pkg/wrap v0.1.12 // indirect
-	k8s.io/apimachinery v0.29.1 // indirect
+	k8s.io/apimachinery v0.29.2 // indirect
 	nhooyr.io/websocket v1.8.10 // indirect
 )
