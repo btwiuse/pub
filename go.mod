@@ -6,7 +6,7 @@ require (
 	github.com/btwiuse/better v0.0.0
 	github.com/btwiuse/rng v0.0.0
 	github.com/webteleport/utils v0.2.8
-	github.com/webteleport/wtf v0.1.5
+	github.com/webteleport/wtf v0.1.6
 )
 
 require (
@@ -29,7 +29,7 @@ require (
 	github.com/quic-go/webtransport-go v0.6.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/rs/cors v1.10.1 // indirect
-	github.com/webteleport/auth v0.0.7 // indirect
+	github.com/webteleport/auth v0.0.8 // indirect
 	github.com/webteleport/webteleport v0.4.2 // indirect
 	go.uber.org/mock v0.3.0 // indirect
 	golang.org/x/crypto v0.19.0 // indirect
