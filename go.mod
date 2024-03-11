@@ -5,8 +5,8 @@ go 1.22.1
 require (
 	github.com/btwiuse/better v0.0.0
 	github.com/btwiuse/rng v0.0.0
-	github.com/webteleport/utils v0.2.8
-	github.com/webteleport/wtf v0.1.6
+	github.com/webteleport/utils v0.2.9
+	github.com/webteleport/wtf v0.1.7
 )
 
 require (
@@ -32,11 +32,11 @@ require (
 	github.com/webteleport/auth v0.0.8 // indirect
 	github.com/webteleport/webteleport v0.4.2 // indirect
 	go.uber.org/mock v0.3.0 // indirect
-	golang.org/x/crypto v0.19.0 // indirect
+	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225 // indirect
 	golang.org/x/mod v0.15.0 // indirect
-	golang.org/x/net v0.21.0 // indirect
-	golang.org/x/sys v0.17.0 // indirect
+	golang.org/x/net v0.22.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.18.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
