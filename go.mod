@@ -2,11 +2,13 @@ module github.com/btwiuse/pub
 
 go 1.22.1
 
+replace github.com/webteleport/wtf => ../wtf
+
 require (
 	github.com/btwiuse/better v0.0.0
 	github.com/btwiuse/rng v0.0.0
-	github.com/webteleport/utils v0.2.9
-	github.com/webteleport/wtf v0.1.8
+	github.com/webteleport/utils v0.2.10
+	github.com/webteleport/wtf v0.1.9
 )
 
 require (
@@ -30,7 +32,7 @@ require (
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/rs/cors v1.10.1 // indirect
 	github.com/webteleport/auth v0.0.8 // indirect
-	github.com/webteleport/webteleport v0.4.3 // indirect
+	github.com/webteleport/webteleport v0.4.4 // indirect
 	go.uber.org/mock v0.3.0 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225 // indirect
