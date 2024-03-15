@@ -2,13 +2,13 @@ module github.com/btwiuse/pub
 
 go 1.22.1
 
-replace github.com/webteleport/wtf => ../wtf
+// replace github.com/webteleport/wtf => ../wtf
 
 require (
 	github.com/btwiuse/better v0.0.0
 	github.com/btwiuse/rng v0.0.0
 	github.com/webteleport/utils v0.2.10
-	github.com/webteleport/wtf v0.1.9
+	github.com/webteleport/wtf v0.1.10
 )
 
 require (
