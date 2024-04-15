@@ -1,6 +1,6 @@
 [package]
 name = "pub"
-version = "0.2.10"
+version = "0.3.0"
 edition = "2021"
 description = "publish anything to the open web"
 license = "MIT"
