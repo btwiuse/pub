@@ -1,14 +1,14 @@
 module github.com/btwiuse/pub
 
-go 1.22.1
+go 1.22.2
 
 // replace github.com/webteleport/wtf => ../wtf
 
 require (
 	github.com/btwiuse/better v0.0.0
 	github.com/btwiuse/rng v0.0.0
-	github.com/webteleport/utils v0.2.10
-	github.com/webteleport/wtf v0.1.17
+	github.com/webteleport/utils v0.2.14
+	github.com/webteleport/wtf v0.1.20
 )
 
 require (
@@ -26,25 +26,27 @@ require (
 	github.com/kataras/basicauth v0.0.3 // indirect
 	github.com/mattn/go-colorable v0.1.2 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/miekg/dns v1.1.58 // indirect
+	github.com/miekg/dns v1.1.59 // indirect
 	github.com/onsi/ginkgo/v2 v2.13.0 // indirect
 	github.com/quic-go/qpack v0.4.0 // indirect
-	github.com/quic-go/quic-go v0.42.0 // indirect
-	github.com/quic-go/webtransport-go v0.7.0 // indirect
+	github.com/quic-go/quic-go v0.43.0 // indirect
+	github.com/quic-go/webtransport-go v0.8.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/rs/cors v1.10.1 // indirect
 	github.com/webteleport/auth v0.0.8 // indirect
-	github.com/webteleport/webteleport v0.5.6 // indirect
+	github.com/webteleport/transport v0.0.0 // indirect
+	github.com/webteleport/webteleport v0.5.17 // indirect
 	go.uber.org/mock v0.4.0 // indirect
-	golang.org/x/crypto v0.21.0 // indirect
-	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225 // indirect
-	golang.org/x/mod v0.15.0 // indirect
-	golang.org/x/net v0.22.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
-	golang.org/x/term v0.18.0 // indirect
+	golang.org/x/crypto v0.22.0 // indirect
+	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f // indirect
+	golang.org/x/mod v0.17.0 // indirect
+	golang.org/x/net v0.24.0 // indirect
+	golang.org/x/sync v0.7.0 // indirect
+	golang.org/x/sys v0.19.0 // indirect
+	golang.org/x/term v0.19.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.18.0 // indirect
+	golang.org/x/tools v0.20.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/apimachinery v0.29.2 // indirect
-	nhooyr.io/websocket v1.8.10 // indirect
+	nhooyr.io/websocket v1.8.11 // indirect
 )
