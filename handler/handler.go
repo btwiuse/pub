@@ -76,12 +76,12 @@ func ResourceHandler(s string) http.Handler {
 	case pathExists(s):
 		return better.FileServer(http.Dir(s))
 	case isPort(s):
-		return utils.ReverseProxy(s)
+		passthrough
 	case isHostPort(s):
-		return utils.ReverseProxy(s)
+		passthrough
 	case isValidURL(s):
-		return utils.ReverseProxy(s)
+		passthrough
 	default:
-		return utils.ReverseProxy(s)
+		return utils.TransparentProxy(s)
 	}
 }
