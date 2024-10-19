@@ -6,7 +6,7 @@ go 1.23.2
 
 require (
 	github.com/btwiuse/better v0.0.0
-	github.com/btwiuse/rng v0.0.0
+	github.com/btwiuse/rng v0.0.1
 	github.com/webteleport/utils v0.2.16
 	github.com/webteleport/wtf v0.1.25
 )
@@ -14,7 +14,7 @@ require (
 require (
 	github.com/btwiuse/version v0.0.1 // indirect
 	github.com/btwiuse/wsconn v0.0.2 // indirect
-	github.com/docker/docker v25.0.1+incompatible // indirect
+	github.com/docker/docker v27.3.1+incompatible // indirect
 	github.com/ebi-yade/altsvc-go v0.1.1 // indirect
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
