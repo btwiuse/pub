@@ -8,7 +8,7 @@ require (
 	github.com/btwiuse/better v0.0.0
 	github.com/btwiuse/rng v0.0.1
 	github.com/webteleport/utils v0.2.16
-	github.com/webteleport/wtf v0.1.25
+	github.com/webteleport/wtf v0.1.26
 )
 
 require (
