@@ -42,8 +42,8 @@ func isHostPort(s string) bool {
 }
 
 func isValidURL(toTest string) bool {
-	_, err := url.ParseRequestURI(toTest)
-	return err == nil
+	u, err := url.ParseRequestURI(toTest)
+	return err == nil && u.Host != ""
 }
 
 func serveFile(s string) http.Handler {
@@ -71,17 +71,26 @@ func ResourceEmoji(s string) string {
 
 func ResourceHandler(s string) http.Handler {
 	switch {
+	case isPort(s), isHostPort(s), isValidURL(s):
+		return utils.ReverseProxy(s)
 	case isFile(s):
 		return serveFile(s)
 	case pathExists(s):
 		return better.FileServer(http.Dir(s))
-	case isPort(s):
-		fallthrough
-	case isHostPort(s):
-		fallthrough
-	case isValidURL(s):
-		fallthrough
 	default:
-		return utils.TransparentProxy(s)
+		return serveLazyFS(s)
 	}
+}
+
+func serveLazyFS(s string) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case isFile(s):
+			http.ServeFile(w, r, s)
+		case pathExists(s):
+			better.FileServer(http.Dir(s)).ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
