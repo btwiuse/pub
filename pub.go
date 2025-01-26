@@ -108,6 +108,7 @@ func Run(args []string) error {
 	handler := Handler(rules)
 	handler = utils.GzipMiddleware(handler)
 	handler = utils.GinLoggerMiddleware(handler)
+	handler = utils.AllowAllCorsMiddleware(handler)
 
 	return wtf.Serve(RelayAddr(), handler)
 }
