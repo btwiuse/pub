@@ -8,7 +8,7 @@ require (
 	github.com/btwiuse/better v0.0.0
 	github.com/btwiuse/rng v0.0.1
 	github.com/webteleport/utils v0.2.19-alpha.1
-	github.com/webteleport/wtf v0.1.31-alpha.1
+	github.com/webteleport/wtf v0.1.31-alpha.2
 )
 
 require (
@@ -28,11 +28,11 @@ require (
 	github.com/miekg/dns v1.1.63 // indirect
 	github.com/onsi/ginkgo/v2 v2.13.0 // indirect
 	github.com/quic-go/qpack v0.5.1 // indirect
-	github.com/quic-go/quic-go v0.49.0 // indirect
+	github.com/quic-go/quic-go v0.50.0 // indirect
 	github.com/quic-go/webtransport-go v0.8.1-0.20241018022711-4ac2c9250e66 // indirect
 	github.com/rs/cors v1.11.1 // indirect
 	github.com/webteleport/auth v0.0.9 // indirect
-	github.com/webteleport/webteleport v0.5.40-alpha.1 // indirect
+	github.com/webteleport/webteleport v0.5.40-alpha.2 // indirect
 	go.uber.org/mock v0.5.0 // indirect
 	golang.org/x/crypto v0.33.0 // indirect
 	golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac // indirect
