@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
@@ -89,13 +89,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: Setup Cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           .cache/go-build
@@ -110,7 +110,7 @@ jobs:
         GOCACHE: /github/workspace/.cache/go-build
 
     - name: archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: build-linux
         path: staticlib/
@@ -119,13 +119,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: Setup Cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           .cache/go-build
@@ -140,7 +140,7 @@ jobs:
         GOCACHE: /github/workspace/.cache/go-build
 
     - name: archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: build-linux-arm
         path: staticlib/
@@ -150,13 +150,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: Setup Cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           .cache/go-build
@@ -171,7 +171,7 @@ jobs:
         GOCACHE: /github/workspace/.cache/go-build
 
     - name: archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: build-linux-others
         path: bin/
@@ -181,13 +181,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: Setup Cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           .cache/go-build
@@ -202,23 +202,22 @@ jobs:
         GOCACHE: /github/workspace/.cache/go-build
 
     - name: archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: build-windows
         path: bin/
 
   build-darwin:
-    if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: Setup Cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           .cache/go-build
@@ -233,23 +232,23 @@ jobs:
         GOCACHE: /github/workspace/.cache/go-build
 
     - name: archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: build-darwin
-        path: bin/
+        path: staticlib/
 
   build-bsd:
     if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: Setup Cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           .cache/go-build
@@ -264,7 +263,7 @@ jobs:
         GOCACHE: /github/workspace/.cache/go-build
 
     - name: archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: build-bsd
         path: bin/
@@ -274,13 +273,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: Setup Cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           .cache/go-build
@@ -296,7 +295,7 @@ jobs:
         HOME: /home/btwiuse
 
     - name: archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: build-android
         path: bin/
@@ -306,9 +305,9 @@ jobs:
     needs:
     - build-linux
     - build-linux-arm
+    - build-darwin
   # - build-linux-others
   # - build-windows
-  # - build-darwin
   # - build-bsd
   # - build-android
     steps:
@@ -317,48 +316,48 @@ jobs:
       run: echo "::set-output name=date::${{ github.run_number }}-$(date +'%Y%m%d')"
 
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4
       name: download artifact build-linux
       with:
         name: build-linux
         path: ./staticlib/
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4
       name: download artifact build-linux-arm
       with:
         name: build-linux-arm
         path: ./staticlib/
 
-  # - uses: actions/download-artifact@v2
+  # - uses: actions/download-artifact@v4
   #   name: download artifact build-linux-others
   #   with:
   #     name: build-linux-others
   #     path: ./bin/
 
-  # - uses: actions/download-artifact@v2
+  # - uses: actions/download-artifact@v4
   #   name: download artifact build-windows
   #   with:
   #     name: build-windows
   #     path: ./bin/
 
-  # - uses: actions/download-artifact@v2
-  #   name: download artifact build-darwin
-  #   with:
-  #     name: build-darwin
-  #     path: ./bin/
+    - uses: actions/download-artifact@v4
+      name: download artifact build-darwin
+      with:
+        name: build-darwin
+        path: staticlib/
 
-  # - uses: actions/download-artifact@v2
+  # - uses: actions/download-artifact@v4
   #   name: download artifact build-bsd
   #   with:
   #     name: build-bsd
   #     path: ./bin/
 
-  # - uses: actions/download-artifact@v2
+  # - uses: actions/download-artifact@v4
   #   name: download artifact build-android
   #   with:
   #     name: build-android
@@ -408,48 +407,48 @@ jobs:
       run: echo "::set-output name=date::$(date +'%Y%m%d%H')-${{ github.run_number }}"
 
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4
       name: download artifact build-linux
       with:
         name: build-linux
         path: ./staticlib/
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4
       name: download artifact build-linux-arm
       with:
         name: build-linux-arm
         path: ./staticlib/
 
-  # - uses: actions/download-artifact@v2
+  # - uses: actions/download-artifact@v4
   #   name: download artifact build-linux-others
   #   with:
   #     name: build-linux-others
   #     path: ./bin/
 
-  # - uses: actions/download-artifact@v2
+  # - uses: actions/download-artifact@v4
   #   name: download artifact build-windows
   #   with:
   #     name: build-windows
   #     path: ./bin/
 
-  # - uses: actions/download-artifact@v2
+  # - uses: actions/download-artifact@v4
   #   name: download artifact build-darwin
   #   with:
   #     name: build-darwin
   #     path: ./bin/
 
-  # - uses: actions/download-artifact@v2
+  # - uses: actions/download-artifact@v4
   #   name: download artifact build-bsd
   #   with:
   #     name: build-bsd
   #     path: ./bin/
 
-  # - uses: actions/download-artifact@v2
+  # - uses: actions/download-artifact@v4
   #   name: download artifact build-android
   #   with:
   #     name: build-android
