@@ -12,7 +12,10 @@ use xz2::read::XzDecoder;
 fn main() {
     println!("cargo:rerun-if-env-changed=OFFLINE");
 
-    let os = env::var("CARGO_CFG_TARGET_OS").unwrap();
+    let os = match env::var("CARGO_CFG_TARGET_OS").unwrap().as_str() {
+        "macos" => "darwin".to_string(),
+        other => other.to_string(),
+    };
     let arch = env::var("CARGO_CFG_TARGET_ARCH").unwrap();
     let version = env::var("CARGO_PKG_VERSION").unwrap();
     let pwd = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
