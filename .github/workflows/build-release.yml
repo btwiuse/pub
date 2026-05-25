@@ -208,7 +208,6 @@ jobs:
         path: bin/
 
   build-darwin:
-    if: ${{ '2 + 2'  == '5' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -236,7 +235,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: build-darwin
-        path: bin/
+        path: staticlib/
 
   build-bsd:
     if: ${{ '2 + 2'  == '5' }}
@@ -306,9 +305,9 @@ jobs:
     needs:
     - build-linux
     - build-linux-arm
+    - build-darwin
   # - build-linux-others
   # - build-windows
-  # - build-darwin
   # - build-bsd
   # - build-android
     steps:
@@ -346,11 +345,11 @@ jobs:
   #     name: build-windows
   #     path: ./bin/
 
-  # - uses: actions/download-artifact@v2
-  #   name: download artifact build-darwin
-  #   with:
-  #     name: build-darwin
-  #     path: ./bin/
+    - uses: actions/download-artifact@v2
+      name: download artifact build-darwin
+      with:
+        name: build-darwin
+        path: staticlib/
 
   # - uses: actions/download-artifact@v2
   #   name: download artifact build-bsd
