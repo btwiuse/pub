@@ -9,6 +9,15 @@ use tar::Archive;
 use ureq::get;
 use xz2::read::XzDecoder;
 
+fn link_darwin_frameworks() {
+    if env::var("CARGO_CFG_TARGET_OS").unwrap() == "macos" {
+        // Use rustc-link-arg to pass -framework to the linker,
+        // since rustc-link-lib=framework= doesn't work for bin crates.
+        println!("cargo:rustc-link-arg=-Wl,-framework,CoreFoundation");
+        println!("cargo:rustc-link-arg=-Wl,-framework,Security");
+    }
+}
+
 fn main() {
     println!("cargo:rerun-if-env-changed=OFFLINE");
 
@@ -30,6 +39,7 @@ fn main() {
     if dbg!(staticlib_dir.exists()) {
         println!("(0) using local ./staticlib");
         println!("cargo:rustc-link-search=native={}", staticlib_dir.display());
+        link_darwin_frameworks();
         return;
     }
 
