@@ -23,6 +23,14 @@ build-linux-arm64: tidy
 	which aarch64-linux-gnu-gcc || sudo pacman -Sy aarch64-linux-gnu-gcc --noconfirm
 	env CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc GOOS=linux GOARCH=arm64 go build -v -o staticlib/linux/aarch64/libpub.a -buildmode=c-archive ./libpub
 
+build-darwin-amd64: tidy
+	env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -v -o staticlib/darwin/x86_64/libpub.a -buildmode=c-archive ./libpub
+
+build-darwin-arm64: tidy
+	env CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -v -o staticlib/darwin/aarch64/libpub.a -buildmode=c-archive ./libpub
+
+build-darwin: build-darwin-amd64 build-darwin-arm64
+
 deno:
 	go mod tidy
 	go generate
