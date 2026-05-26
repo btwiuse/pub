@@ -35,11 +35,12 @@ fn main() {
         return;
     }
 
+    link_darwin_frameworks();
+
     // use local go static lib if found
     if dbg!(staticlib_dir.exists()) {
         println!("(0) using local ./staticlib");
         println!("cargo:rustc-link-search=native={}", staticlib_dir.display());
-        link_darwin_frameworks();
         return;
     }
 
